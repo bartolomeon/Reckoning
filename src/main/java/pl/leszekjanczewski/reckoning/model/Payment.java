@@ -1,44 +1,45 @@
 package pl.leszekjanczewski.reckoning.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+//import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @Entity
-@Table(name = "payments")
 public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_id")
+    @Column(name = "payment_id") //TODO: 'id'
     private Long paymentId;
 
     @Column(name = "amount")
     private Double amount;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "paymant_day")
-    private Date paymantDay;
+    private Date paymantDay;  //TODO: typo -> 'paymentDay'
 
     @ManyToMany(mappedBy = "payments")
-    @EqualsAndHashCode.Exclude
     private Set<Client> clients = new HashSet<>();
 
     @ManyToMany(mappedBy = "payments")
-    @EqualsAndHashCode.Exclude
     private Set<Child> children = new HashSet<>();
 
     @ManyToMany(mappedBy = "payments")
-    @EqualsAndHashCode.Exclude
     private Set<Class> classes = new HashSet<>();
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

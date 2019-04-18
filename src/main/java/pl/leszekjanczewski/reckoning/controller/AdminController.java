@@ -160,7 +160,7 @@ public class AdminController {
     @GetMapping("/admin/addClass")
     public String addClass(Model model) {
         model.addAttribute("class", new Class());
-        List<Class> classList = classRepo.findAll();
+        List<Class> classList = classRepo.findAll(); //TODO: to List<Class> jest bardzo konfundujące :)
         model.addAttribute("classes", classList);
         List<TypeOfClass> typeOfClassList = typeOfClassRepo.findAll();
         model.addAttribute("typOfClassList", typeOfClassList);
@@ -170,16 +170,17 @@ public class AdminController {
     @PostMapping("/admin/addClass")
     public String saveAddClass(@ModelAttribute Class classReco) {
         String segOne = classReco.getDayOfWeek().substring(0, 2).toUpperCase();
-        String segTwo = classReco.getTypeOfClass().getTypeOfClassName().substring(0, 3).toUpperCase();
-        ;
-        String segThree;
-        if (classReco.getTypeOfClass().getTypeOfClassName().contains("Wst")) {
+        String typeOfClassName = classReco.getTypeOfClass().getTypeOfClassName();  //TODO: to wygląda tak, że chyba przydałyby się jakieś typy Enum w tej encji 'TypeOfClass'
+        String segTwo = typeOfClassName.substring(0, 3).toUpperCase();
+        
+        final String segThree;
+        if (typeOfClassName.contains("Wst")) { //TODO: manipulacje na stringach są złym pomysłem -> użyj enuma
             segThree = "WST";
-        } else if (classReco.getTypeOfClass().getTypeOfClassName().contains("Podst")) {
+        } else if (typeOfClassName.contains("Podst")) {
             segThree = "PODST";
-        } else if (classReco.getTypeOfClass().getTypeOfClassName().contains("zaawa")) {
+        } else if (typeOfClassName.contains("zaawa")) {
             segThree = "ZAAW";
-        } else if (classReco.getTypeOfClass().getTypeOfClassName().contains("pocz") || classReco.getTypeOfClass().getTypeOfClassName().contains("pierwszy")) {
+        } else if (typeOfClassName.contains("pocz") || typeOfClassName.contains("pierwszy")) {
             segThree = "POCZ";
         } else {
             segThree = "WYZW";
@@ -196,8 +197,8 @@ public class AdminController {
 //        model.addAttribute("calendarA", kalendarz);
         List<Object[]> classList = classRepo.listClassWithName();
         model.addAttribute("classes", classList);
-        List dateList = new ArrayList();
-        System.out.println(dateList);
+        List dateList = new ArrayList(); //TODO: to chyba nieskończone, ale typy generyczne powinny być zawsze wyspecyfikowane
+        System.out.println(dateList);  //TODO: out - użyj loggera
         model.addAttribute("dateList", dateList);
         return "admin/addCalendar";
     }
@@ -211,7 +212,7 @@ public class AdminController {
     @PostMapping("/admin/addDateToCalendar")
     public String addDateToCalendar(@ModelAttribute List<String> dateList, @ModelAttribute String date) {
         dateList.add(date);
-        System.out.println(dateList);
+        System.out.println(dateList); //TODO: out - użyj loggera
         return "redirect:/admin/addCalendar";
     }
 }

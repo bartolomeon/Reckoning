@@ -15,11 +15,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+
+
+//TODO: zdecydowanie zmiana nazwy - Class jest zbyt problematyczne w Javie - może 'Activity'?
+
+@Data  //TODO: tu chyba nie chcesz mieć automatycznego hashCode w ogóle - ja bym tylko dał @Getter + @Setter;  w przypadku encji unikalność definiuje klucz głowny, nie zestaw atrybutów
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "classes")
+@Table(name = "classes") //TODO: tabele raczej w liczbie pojedynczej - tutaj można wtedy pominąć adnotację @Table
 public class Class {
 
     @Id
@@ -27,7 +31,7 @@ public class Class {
     @Column(name = "class_id")
     private Long classId;
 
-    @Column(name = "class_name")
+    @Column(name = "class_name") //TODO: adnotacje @Column nie są potrzebne w ogóle, jeżeli nazwy kolumn będą domyślne (jak tutaj)
     private String className;
 
    @ManyToOne
@@ -48,21 +52,21 @@ public class Class {
 //    @NotEmpty(message = "Podaj czas trwania zajęć")
     private int duration;
 
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Exclude //TODO: out
     @ManyToMany(mappedBy = "classes")
     private Set<Child> children = new HashSet<>();
 
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Exclude//TODO: out
     @ManyToMany
     @JoinTable(name = "classes_calendars", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "calendar_id"))
     private Set<Calendar> calendars = new HashSet<>();
 
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Exclude//TODO: out
     @ManyToMany
     @JoinTable(name = "classes_payments", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "payment_id"))
     private Set<Payment> payments = new HashSet<>();
 
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Exclude//TODO: out
     @ManyToMany
     @JoinTable(name = "classes_installments", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "installment_id"))
     private Set<Installment> installments = new HashSet<>();
